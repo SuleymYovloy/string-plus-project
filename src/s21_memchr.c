@@ -1,23 +1,29 @@
 #include <stdio.h>
+#include "s21_string.h"
 
-char* find_char(const char* str, int c) {
-    while (*str && *str != (char)c) {
-        str++;
+void* memchr(const void* str, int c, size_t n) {
+    const unsigned char* s = (const unsigned char*)str;
+
+    for (size_t i = 0; i < n; i++) {
+        if (s[i] == (unsigned char)c) {
+            return (void*)&s[i];
+        }
     }
-    return (*str == (char)c) ? (char*)str : NULL;
+    return NULL;
 }
 
 int main(void) {
-    char search_char[] = "a";
-    char search_string[] = "school_21";
+    const char* string = "Hello school21!";
+    int search_char = 's';
+    size_t n = 5;
 
-    char* result = find_char(search_string, search_char[0]);
+    char* result = (char*)memchr(string, search_char, n);
 
     if (result) {
-        printf("'%s' найден на позиции %ld\n", search_char, result - search_string + 1);
+        printf("'%c' найден на позиции %ld.\n", search_char, result - string + 1);
     }
     else {
-        printf("'%s' не найден\n", search_char);
+        printf("'%c' не найден в указанных байтах строки!\n", search_char);
     }
 
     return 0;
